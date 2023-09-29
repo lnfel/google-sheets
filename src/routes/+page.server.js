@@ -1,19 +1,52 @@
+import { fail } from '@sveltejs/kit'
+import { luciaAuth } from '$lib/lucia/index.js'
+
 export const load = async ({ locals }) => {
-    const session = await locals.luciaAuthRequest.validate()
-    console.log('[session]: ', session)
-    if (session) {
-        locals.luciaAuthRequest.setSession(session)
-    }
+    // const session = await locals.luciaAuthRequest.validate()
+    // console.log('[session]: ', session)
 }
 
-/**
- * @type {import("@sveltejs/kit").Actions}
- */
 export const actions = {
     register: async ({ request, locals }) => {
         const formData = await request.formData()
+        const name = formData.get('name')
+        const surname = formData.get('surname')
+        const email = formData.get('email')
+        const password = formData.get('password')
         for(const [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`)
+            if (!value || value.length === 0) return fail(400, {
+                errors: {
+                    [key]: `${key.at(0)?.toUpperCase()}${key.slice(1)} is required.`
+                },
+                name,
+                surname,
+                email
+            });
+        }
+
+        try {
+            const user = await luciaAuth.createUser({
+                key: {
+                    providerId: 'email',
+                    providerUserId: typeof email === 'string' ? email.toLowerCase() : '',
+                    password: typeof password === 'string' ? password : ''
+                },
+                attributes: {
+                    name: typeof name === 'string' ? name : '',
+                    surname: typeof surname === 'string' ? surname : '',
+                    email: typeof email === 'string' ? email : ''
+                }
+            })
+
+            const session = await luciaAuth.createSession({
+                userId: user.userId,
+                attributes: {}
+            })
+
+            locals.luciaAuthRequest.setSession(session)
+        } catch (error) {
+            console.log('[register] error: ', error)
         }
     }
 }
