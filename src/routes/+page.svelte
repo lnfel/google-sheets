@@ -1,2 +1,17 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<main>
+    <section>
+        <form method="post" action="/" class="space-y-4">
+            <label class="label">
+                <div>Email</div>
+                <input class="input max-w-fit rounded-lg" title="Input (email)" type="email" placeholder="john@example.com" autocomplete="email" />
+            </label>
+    
+            <label class="label">
+                <div>Password</div>
+                <input class="input max-w-fit rounded-lg" title="Input (password)" type="password" placeholder="password" />
+            </label>
+
+            <button type="submit" class="btn variant-filled-primary">Button</button>
+        </form>
+    </section>
+</main>
