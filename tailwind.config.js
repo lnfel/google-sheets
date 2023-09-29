@@ -19,7 +19,7 @@ export default {
         forms,
         skeleton({
             themes: {
-                preset: ["wintry"]
+                preset: [{ name: "wintry", enhancements: true }]
             }
         })
     ],
