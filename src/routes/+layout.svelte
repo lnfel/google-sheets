@@ -13,9 +13,20 @@
 	});
 </script>
 
-<AppShell>
-	<svelte:fragment slot="header">Header</svelte:fragment>
-	<svelte:fragment slot="pageHeader">Page Header</svelte:fragment>
+<AppShell 
+    regionPage="space-y-4"
+    slotHeader="container mx-auto px-4 py-6 lg:px-8"
+    slotPageHeader="container mx-auto px-4 lg:px-8"
+    slotPageContent="container mx-auto px-4 lg:px-8"
+    slotFooter="container mx-auto px-4 py-6 lg:px-8">
+	<svelte:fragment slot="header">
+        <h1 class="text-xl uppercase font-semibold tracking-wide">Sample App</h1>
+    </svelte:fragment>
+	<svelte:fragment slot="pageHeader">
+        <h2 class="text-lg font-semibold tracking-wide">Register</h2>
+    </svelte:fragment>
 	<slot />
-	<svelte:fragment slot="footer">Footer</svelte:fragment>
+	<svelte:fragment slot="footer">
+        <small>&copy; Sample App | All rights reserved.</small>
+    </svelte:fragment>
 </AppShell>
