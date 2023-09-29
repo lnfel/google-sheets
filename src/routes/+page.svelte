@@ -11,7 +11,7 @@
                 <input class="input max-w-fit rounded-lg" title="Input (password)" type="password" placeholder="password" />
             </label>
 
-            <button type="submit" class="btn variant-filled-primary">Button</button>
+            <button type="submit" class="btn variant-filled-primary rounded-lg">Button</button>
         </form>
     </section>
 </main>
