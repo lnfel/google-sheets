@@ -48,5 +48,12 @@ export const actions = {
         } catch (error) {
             console.log('[register] error: ', error)
         }
+    },
+    logout: async ({ locals }) => {
+        const session = await locals.luciaAuthRequest.validate()
+        if (!session) return fail(401)
+        await luciaAuth.invalidateSession(session.sessionId)
+        locals.luciaAuthRequest.setSession(null)
+        // throw redirect(302, "/login")
     }
 }
