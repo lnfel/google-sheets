@@ -1,3 +1,11 @@
+export const load = async ({ locals }) => {
+    const session = await locals.luciaAuthRequest.validate()
+    console.log('[session]: ', session)
+    if (session) {
+        locals.luciaAuthRequest.setSession(session)
+    }
+}
+
 /**
  * @type {import("@sveltejs/kit").Actions}
  */

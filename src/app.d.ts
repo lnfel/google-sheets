@@ -3,10 +3,22 @@
 declare global {
 	namespace App {
 		// interface Error {}
-		// interface Locals {}
+		interface Locals {
+            luciaAuthRequest: Lucia.AuthRequest
+        }
 		// interface PageData {}
 		// interface Platform {}
 	}
+    namespace Lucia {
+        type Auth = import('$lib/lucia/index.js').Auth
+        type AuthRequest = import('lucia').AuthRequest
+        type DatabaseUserAttributes = {
+            name: string
+            surname: string
+            email: string
+        }
+        type DatabaseSessionAttributes = {}
+    }
 }
 
 export {};

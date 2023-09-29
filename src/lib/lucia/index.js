@@ -1,11 +1,11 @@
 import { lucia } from "lucia"
-import { web } from "lucia/middleware"
+import { sveltekit } from "lucia/middleware"
 import { prisma as prismaAdapter } from "@lucia-auth/adapter-prisma"
 import { prisma as prismaClient } from "$lib/prisma"
 
-export const auth = lucia({
+export const luciaAuth = lucia({
     env: "DEV",
-    middleware: web(),
+    middleware: sveltekit(),
     sessionCookie: {
 		expires: false
 	},
@@ -18,3 +18,7 @@ export const auth = lucia({
         }
     }
 })
+
+/**
+ * @typedef {typeof luciaAuth} Auth
+ */
