@@ -6,7 +6,14 @@ declare global {
 		interface Locals {
             luciaAuthRequest: Lucia.AuthRequest
         }
-		// interface PageData {}
+		interface PageData {
+            user: {
+                name: string
+                surname: string
+                email: string
+                userId: string
+            }
+        }
 		// interface Platform {}
 	}
     namespace Lucia {
