@@ -48,7 +48,7 @@ export const load = async ({ locals }) => {
         ranges: ['users!2:50']
     })
     const usersData = getUsersResponse.data
-    const spreadSheetUsers = usersData.valueRanges?.[0].values
+    const spreadSheetUsers = usersData.valueRanges?.[0]?.values ?? []
 
     return {
         users,
