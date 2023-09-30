@@ -7,12 +7,10 @@ declare global {
             luciaAuthRequest: Lucia.AuthRequest
         }
 		interface PageData {
-            user: {
-                name: string
-                surname: string
-                email: string
-                userId: string
-            }
+            user: Lucia.User
+            users: Lucia.User[]
+            spreadsheetHeaders: string[]
+            spreadSheetUsers: string[][]
         }
 		// interface Platform {}
 	}
@@ -25,6 +23,12 @@ declare global {
             email: string
         }
         type DatabaseSessionAttributes = {}
+        type User = {
+            name: string
+            surname: string
+            email: string
+            userId: string
+        }
     }
 }
 
