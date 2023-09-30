@@ -48,9 +48,9 @@
             {/if}
         </nav>
     </svelte:fragment>
-	<svelte:fragment slot="pageHeader">
+	<!-- <svelte:fragment slot="pageHeader">
         <h2 class="text-lg font-semibold tracking-wide">Register</h2>
-    </svelte:fragment>
+    </svelte:fragment> -->
 	<slot />
 	<svelte:fragment slot="footer">
         <small>&copy; Sample App | All rights reserved.</small>

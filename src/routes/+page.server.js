@@ -49,6 +49,26 @@ export const actions = {
             console.log('[register] error: ', error)
         }
     },
+    login: async ({ request, locals }) => {
+        const formData = await request.formData()
+        const email = formData.get('email')
+        const password = formData.get('password')
+
+        try {
+            const key = await luciaAuth.useKey(
+                "email",
+                typeof email === 'string' ? email.toLowerCase() : '',
+                typeof password === 'string' ? password : ''
+            )
+            const session = await luciaAuth.createSession({
+                userId: key.userId,
+                attributes: {}
+            })
+            locals.luciaAuthRequest.setSession(session)
+        } catch (error) {
+            console.log('[login] error: ', error)
+        }
+    },
     logout: async ({ locals }) => {
         const session = await locals.luciaAuthRequest.validate()
         if (!session) return fail(401)
