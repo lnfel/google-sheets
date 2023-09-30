@@ -33,6 +33,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Google Sheets | Sample App</title>
+</svelte:head>
+
 <main class="space-y-6">
     <section>
         <h2 class="text-lg font-semibold tracking-wide">Register</h2>
