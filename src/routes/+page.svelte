@@ -30,7 +30,7 @@
         head: $page.data.spreadsheetHeaders,
         // body: tableMapperValues($page.data?.users ?? [], ['name', 'surname', 'email']),
         body: $page.data.spreadSheetUsers,
-        foot: ['Total', '', `<code class="code">${$page.data?.users?.length ?? 0}</code>`]
+        foot: ['Total', '', `<code class="code">${$page.data.spreadSheetUsers?.length ?? 0}</code>`]
     }
 
     /** @type {import('@skeletonlabs/skeleton').TableSource}*/

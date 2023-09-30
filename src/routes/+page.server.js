@@ -3,7 +3,7 @@ import { fail } from '@sveltejs/kit'
 import { luciaAuth } from '$lib/lucia/index.js'
 import { prisma } from '$lib/prisma/index.js'
 import { google, Auth } from 'googleapis'
-import { GOOGLE_API_KEY } from '$env/static/private'
+import { GOOGLE_API_KEY, SPREADSHEET_ID } from '$env/static/private'
 
 export const load = async ({ locals }) => {
     // const session = await locals.luciaAuthRequest.validate()
@@ -30,21 +30,21 @@ export const load = async ({ locals }) => {
     // console.log(spreadsheet)
 
     // const response = await sheets.spreadsheets.get({
-    //     spreadsheetId: '1gk0IQjjAdCAbEBtrgeqdeAV5An0grFlFaO92kXAVCeM'
+    //     spreadsheetId: SPREADSHEET_ID
     // })
     // const spreadsheet = response.data
     // console.log(spreadsheet)
     // console.log(response)
 
     const getHeadersResponse = await sheets.spreadsheets.values.batchGet({
-        spreadsheetId: '1gk0IQjjAdCAbEBtrgeqdeAV5An0grFlFaO92kXAVCeM',
+        spreadsheetId: SPREADSHEET_ID,
         ranges: ['users!1:1']
     })
     const headersData = getHeadersResponse.data
     const spreadsheetHeaders = headersData.valueRanges?.[0].values?.[0]
 
     const getUsersResponse = await sheets.spreadsheets.values.batchGet({
-        spreadsheetId: '1gk0IQjjAdCAbEBtrgeqdeAV5An0grFlFaO92kXAVCeM',
+        spreadsheetId: SPREADSHEET_ID,
         ranges: ['users!2:50']
     })
     const usersData = getUsersResponse.data
@@ -77,6 +77,7 @@ export const actions = {
         }
 
         try {
+            // Create User
             const user = await luciaAuth.createUser({
                 key: {
                     providerId: 'email',
@@ -90,11 +91,40 @@ export const actions = {
                 }
             })
 
+            // Add created user to google spreadsheet
+            const googleAuth = new Auth.GoogleAuth({
+                keyFile: resolve('google_sheets_service_account_keys.json'),
+                scopes: [
+                    'https://www.googleapis.com/auth/drive.file',
+                    'https://www.googleapis.com/auth/spreadsheets'
+                ]
+            })
+        
+            const sheets = google.sheets({
+                version: 'v4',
+                auth: googleAuth
+            })
+
+            const response = await sheets.spreadsheets.values.append({
+                spreadsheetId: SPREADSHEET_ID,
+                range: 'users!2:50',
+                insertDataOption: 'INSERT_ROWS',
+                valueInputOption: 'RAW',
+                requestBody: {
+                    majorDimension: 'ROWS',
+                    values: [
+                        [user.name, user.surname, user.email]
+                    ]
+                }
+            })
+
+            // Login the newly registered user
             const session = await luciaAuth.createSession({
                 userId: user.userId,
                 attributes: {}
             })
 
+            // Set lucia session cookie
             locals.luciaAuthRequest.setSession(session)
         } catch (error) {
             console.log('[register] error: ', error)
