@@ -2,6 +2,7 @@
 
 ## Pre-requites
  - [Node.js](https://nodejs.org/en) (Download the LTS version as Current version contains experimental features that may contain bugs)
+ - [MySQL](https://dev.mysql.com/downloads/installer/) ([INSTALL GUIDE](https://www.w3schools.com/mysql/mysql_install_windows.asp))
  - Terminal/CMD (or any shell console emulator i.e. hyper, tmux)
  - Code editor of your choice, VScode, NVIM etc.
 
@@ -34,7 +35,37 @@ npm install
 # Or if your are using pnpm
 pnpm install
 ```
-5. Run the dev server.
+5. Create mysql database. Make sure you have MySQL installed:
+```sh
+# Open mysql session (no password)
+mysql -u root
+# of if you have setup password for root user
+# Enter the password after running the command below
+mysql -u root -p
+
+# Once you are inside mysql console, enter the following
+CREATE DATABASE google_sheets;
+# To confirm we have the database created, enter:
+SHOW DATABASES;
+
+# To exit mysql session
+exit
+```
+6. Run prisma database migrations. This will populate the database tables of the recently created database on step 5.
+```sh
+# Using NPM, then confirm the prompt afterwards
+npx prisma migrate dev --name init
+# or with pnpm
+pnpx prisma migrate dev --name init
+
+# Running the above command(s) will also generate prisma client that is required for our code to run
+# In cases that prisma client is not generate, we can manually generate it by running:
+npx prisma generate
+# or with pnpm
+pnpx prisma generate
+```
+7. Create `.env` and `google_sheets_service_account_keys.json` file inside project's root directory. Contact me for what contents need to be inside those files. They are sensitive and cannot be included on public source code. 
+8. Run the dev server.
 ```sh
 # This will make our app available at http://localhost:5173
 npm run dev
