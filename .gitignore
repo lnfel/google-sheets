@@ -12,3 +12,4 @@ prisma/migrations
 
 google_sheets_service_account_keys.json
 notes.md
+/experiment
